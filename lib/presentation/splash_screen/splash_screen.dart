@@ -10,6 +10,9 @@ import '../../widgets/custom_image_view.dart';
 import 'controller/splash_controller.dart';
 
 class SplashScreen extends GetWidget<SplashController> {
+  const SplashScreen({super.key});
+
+
   @override
   Widget build(BuildContext context){
     return SafeArea(child: Scaffold(backgroundColor: ColorConstant.whiteA700,
@@ -18,9 +21,9 @@ class SplashScreen extends GetWidget<SplashController> {
       child: Column(mainAxisAlignment: MainAxisAlignment.center,
       children: [
         CustomImageView(
-          svgPath:ImageConstant.imgInfo,
-          height: getSize(78),
-          width: getSize(78)
+          imagePath:ImageConstant.logo,
+          height: getSize(200),
+          width: getSize(200)
         ),
         Text("lbl_samraat_international".tr,
         overflow: TextOverflow.ellipsis,

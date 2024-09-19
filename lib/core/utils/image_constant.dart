@@ -1,3 +1,3 @@
 class ImageConstant {
-  static String imgInfo = 'assets/images/img_info.svg';
+  static String logo = 'assets/images/samraat_international.jpg';
 }

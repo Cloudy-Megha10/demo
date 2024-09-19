@@ -2,6 +2,8 @@ import 'package:demo_app/presentation/splash_screen/binding/splash_binding.dart'
 import 'package:demo_app/presentation/splash_screen/splash_screen.dart';
 import 'package:get/get.dart';
 
+import '../presentation/home_screen/binding/home_binding.dart';
+import '../presentation/home_screen/home_screen.dart';
 import '../presentation/login_screen/binding/login_binding.dart';
 import '../presentation/login_screen/login_screen.dart';
 
@@ -19,9 +21,9 @@ class AppRoutes {
     bindings: [
       LoginBinding(),
   ]),
-  // GetPage(name: homeScreen, page: ()=> HomeScreen(),
-  // bindings: [
-  //   HomeBindings(),
-  // ]),
+  GetPage(name: homeScreen, page: ()=> HomeScreen(),
+  bindings: [
+    HomeBinding(),
+  ]),
   ];
 }
