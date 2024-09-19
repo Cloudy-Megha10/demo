@@ -1,4 +1,4 @@
-import 'package:demo_app/presentation/splash_screen/splash_screen.dart';
+import 'package:demo_app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 
@@ -23,7 +23,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
        visualDensity: VisualDensity.standard,
     ),
-    home: SplashScreen(),
+    initialRoute: AppRoutes.splashScreen,
+    getPages: AppRoutes.pages,
     );
   }
 }
