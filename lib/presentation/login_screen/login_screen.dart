@@ -2,13 +2,21 @@
 
 import 'dart:math';
 
+import 'package:demo_app/core/utils/color_constant.dart';
 import 'package:demo_app/localization/en_us/app_localization.dart';
+import 'package:demo_app/theme/app_style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/state_manager.dart';
+import 'package:get/utils.dart';
 
+import '../../core/utils/size_utils.dart';
+import '../../core/utils/validation_functions.dart';
 import '../../routes/app_routes.dart';
+import '../../widgets/custom_button.dart';
+import '../../widgets/custom_text_form_field.dart';
 import 'controller/login_controller.dart';
 
 class LoginScreen extends GetWidget<LoginController> {
@@ -44,10 +52,11 @@ class LoginScreen extends GetWidget<LoginController> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   // Logo
-                  Image.asset(
+                  ClipOval(child: Image.asset(
                     'assets/images/samraat_international.jpg', // Add your logo image path
                     height: 150,
                   ),
+                  )
                 ],
               ),
             ),
@@ -55,105 +64,132 @@ class LoginScreen extends GetWidget<LoginController> {
             const SizedBox(height: 20),
             
             // Login heading
-            const Text(
-              'Login',
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
+             Text(
+              'lbl_login'.tr,
+              style: AppStyle.txtAllerBold28
             ),
             
             const SizedBox(height: 20),
-            
-            // Username field
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30.0),
-              child: TextField(
-                decoration: InputDecoration(
-                  labelText: 'Username/ Membership id',
-                  hintText: 'enter your username/ membership id',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
+
+           // Login heading
+Padding(
+  padding: const EdgeInsets.symmetric(horizontal: 20),
+  child: Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      // Username label
+      Text(
+        'lbl_username'.tr,
+        style: AppStyle.txtAllerBold20,
+      ),
+
+      // Username field
+      CustomTextFormField(
+        controller: controller.userNameController,
+        hintText: "lbl_enter_username".tr, // Changed from prefixText to hintText
+        isObscureText: false, // Usernames aren't typically obscured
+        margin: getMargin(top: 13),
+        width: 300,
+        shape: TextFormFieldShape.RoundedBorder16,
+        textInputType: TextInputType.emailAddress,
+        validator: (value) {
+          if (value == null ||
+              (!isValidUserName(value, isRequired: true))) {
+            return "lbl_enter_valid_username".tr;
+          }
+          return null;
+        },
+      ),
+
+      const SizedBox(height: 20),
+
+      // Password label
+      Text(
+        'lbl_password'.tr, // Changed label to "Password"
+        style: AppStyle.txtAllerBold20,
+      ),
+
+      // Password field
+     Obx(() => CustomTextFormField(
+        controller: controller.passwordController,
+        hintText: "lbl_enter_password".tr, // Hint text instead of prefixText
+        isObscureText: controller.isPasswordVisible.value, // Usernames aren't typically obscured // Hide text for password field
+        margin: getMargin(top: 13),
+        width: 300,
+        shape: TextFormFieldShape.RoundedBorder16,
+        textInputType: TextInputType.visiblePassword, // Use appropriate type
+         suffix: IconButton(
+                  icon: Icon(
+                    controller.isPasswordVisible.value
+                        ? Icons.visibility
+                        : Icons.visibility_off,
+                    color: Colors.grey,
                   ),
-                  filled: true,
-                  fillColor: Colors.grey[200],
+                  onPressed: () {
+                    controller.togglePasswordVisibility(); // Toggle visibility
+                  },
                 ),
-              ),
-            ),
-            
-            const SizedBox(height: 20),
-            
-            // Password field
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30.0),
-              child: TextField(
-                obscureText: true,
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  hintText: 'enter your password',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  filled: true,
-                  fillColor: Colors.grey[200],
-                ),
-              ),
-            ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "lbl_enter_valid_password".tr;
+                  }
+                  return null;
+                },
+      ),)
+    ],
+  ),
+),
             
             // Forgot Password link
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30.0),
+              padding: const EdgeInsets.symmetric(horizontal: 21.0),
               child: Align(
                 alignment: Alignment.centerRight,
                 child: TextButton(
                   onPressed: () {
                     // Forgot Password action
                   },
-                  child: const Text(
-                    'Forgot Password?',
-                    style: TextStyle(
-                      color: Colors.red,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  child: Text(
+                    'lbl_forgot_password'.tr,
+                    style: AppStyle.txtAllerBoldRed
                   ),
                 ),
               ),
             ),
-            
-            const SizedBox(height: 20),
-            
+           SizedBox(height: 10,),
             // Login button
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30.0),
-              child: SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    // Login button action
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 15), backgroundColor: Colors.red,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ), // Set the button color
-                  ),
-                  child: GestureDetector(child:const Text(
-                    'Login',
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                    ),
-                  ),
-                  onTap: () => Get.toNamed(AppRoutes.homeScreen),
-                  ),
-                  
-                ),
-              ),
-            ),
+             CustomButton(
+                                                            height:
+                                                                getVerticalSize(
+                                                                    52),
+                                                            width:
+                                                                getHorizontalSize(
+                                                                    320),
+                                                            text: "lbl_login"
+                                                                .tr,
+                                                            margin: getMargin(
+                                                                top: 34),
+                                                            onTap: () {
+                                                              onTapSigninwith();
+                                                            }),
+          
           ],
         ),
       ),
     );
   }
+  onTapSigninwith() async {
+    print("login true");
+    print(controller.userNameController.text);
+    print(controller.passwordController.text);
+    if (controller.userNameController.text.isEmpty ||
+        controller.passwordController.text.isEmpty) {
+      Fluttertoast.showToast(
+        msg: "lbl_enter_valid_credentials".tr,
+        backgroundColor: Colors.grey,
+      );
+    } else {
+      await controller.login(userName: controller.userNameController.text, password: controller.passwordController.text);
+    }
+}
 }
