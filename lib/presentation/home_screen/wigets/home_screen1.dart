@@ -16,7 +16,7 @@ class DashboardPage extends StatelessWidget {
           CustomBuildDashboardView(icon:Icons.people, title:'Manage Members'),
           CustomBuildDashboardView(icon:Icons.photo, title:'Manage Gallery'),
           CustomBuildDashboardView(icon:Icons.folder, title:'Manage Resources'),
-          CustomBuildDashboardView(icon:Icons.report, title:'Manage Report'),
+          CustomBuildDashboardView(icon:Icons.assignment, title:'Manage Report'),
         ],
       ),
     );

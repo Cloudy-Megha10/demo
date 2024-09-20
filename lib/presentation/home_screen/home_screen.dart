@@ -1,13 +1,13 @@
 import 'package:demo_app/core/utils/color_constant.dart';
 import 'package:demo_app/presentation/home_screen/controller/home_controller.dart';
+import 'package:demo_app/presentation/home_screen/wigets/home_screen2.dart';
+import 'package:demo_app/presentation/home_screen/wigets/home_screen3.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../../widgets/custom_build_dashboard_view.dart';
 import 'wigets/home_screen1.dart';
 
-class HomeScreen extends GetWidget<HomeController> {
-  const HomeScreen({super.key});
+class HomeScreen extends StatelessWidget {
+   final HomeController homeController = Get.put(HomeController()); // Initialize the controller
 
    @override
   Widget build(BuildContext context) {
@@ -17,18 +17,18 @@ class HomeScreen extends GetWidget<HomeController> {
         return Scaffold(
           appBar: AppBar(
             title: 
-              const Row(
+              Row(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.person,
                     color: Colors.black,
                     size: 40,
                   ), 
-                  SizedBox(width: 16),
+                  const SizedBox(width: 16),
              Column(
               crossAxisAlignment: CrossAxisAlignment.start,
                children: [
-                      Text(
+                      const Text(
                         'Welcome',
                         style: TextStyle(
                           color: Colors.red,
@@ -36,14 +36,16 @@ class HomeScreen extends GetWidget<HomeController> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                       Text(
-                        'Username',
-                        style: TextStyle(
+                       Obx(() =>Text(
+                        // 'Username',
+                        homeController.userName.value,
+                        style: const TextStyle(
                           color: Colors.black,
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                       )
                     ],
             ),
               ]),
@@ -78,7 +80,7 @@ class HomeScreen extends GetWidget<HomeController> {
                   controller: controller,
                 ),
                 _buildBottomNavItem(
-                  icon: Icons.folder_outlined,
+                  icon: Icons.folder,
                   label: 'Resources',
                   index: 3,
                   controller: controller,
@@ -152,6 +154,7 @@ Widget _buildBottomNavItem({
 }
 
 class NavigationController extends GetxController {
+   final HomeController controller = Get.put(HomeController()); // Initialize the controller
   int selectedIndex = 2;
 
   void updateIndex(int index) {
@@ -166,13 +169,34 @@ class NavigationController extends GetxController {
       case 1:
         return MembersPage();
       case 2:
-        return const DashboardPage();
+      return Obx(() {
+      if (controller.userRole.value == "Director") {
+        return DashboardPage();
+        }
+        else if(controller.userRole.value == "Secretary" || controller.userRole.value == "President"){
+        return HomeWidget2();  
+        }else if(controller.userRole.value == "President Elect" || controller.userRole.value == "Treasurer" || controller.userRole.value == "Vice President"){
+          return HomeWidget3();
+        }else{
+          return DashboardPage();
+        }});
       case 3:
         return ResourcesPage();
       case 4:
         return GalleryPage();
       default:
-        return const DashboardPage();
+      return Obx(() {
+       if (controller.userRole.value == "Director") {
+        return DashboardPage();
+        }
+        else if(controller.userRole.value == "Secretary" || controller.userRole.value == "President"){
+        return HomeWidget2();  
+        }else if(controller.userRole.value == "President Elect" || controller.userRole.value == "Treasurer" || controller.userRole.value == "Vice President"){
+          return HomeWidget3();
+         }else{
+          return DashboardPage();
+        }
+      });
     }
   }
 }
@@ -196,20 +220,20 @@ class SideDrawer extends StatelessWidget {
                 width: 270,
                 decoration: BoxDecoration(color: ColorConstant.whiteA700,borderRadius: BorderRadius.circular(15)),
                 child:
-              const Row(
+              Row(
                 children: [
-                  SizedBox(width: 12),
-                  Icon(
+                  const SizedBox(width: 12),
+                  const Icon(
                     Icons.person,
                     color: Colors.black,
                     size: 50,
                   ),
-                  SizedBox(width: 16),
+                  const SizedBox(width: 16),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: 12),
-                      Text(
+                      const SizedBox(height: 12),
+                      const Text(
                         'Welcome',
                         style: TextStyle(
                           color: Colors.red,
@@ -218,8 +242,9 @@ class SideDrawer extends StatelessWidget {
                         ),
                       ),
                        Text(
-                        'Username',
-                        style: TextStyle(
+                        //'Username',
+                        controller.userName.value,
+                        style: const TextStyle(
                           color: Colors.black,
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -284,6 +309,7 @@ class SideDrawer extends StatelessWidget {
               onTap: () {
                 controller.updateSelectedIndex(5);
                 // Handle logout
+                controller.removeAll();
               },
             ),
           ],

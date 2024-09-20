@@ -1,11 +1,15 @@
+import 'package:demo_app/core/network/dependency_injection.dart';
 import 'package:demo_app/routes/app_routes.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/route_manager.dart';
 
 import 'localization/en_us/app_localization.dart';
 
 void main() {
   runApp(const MyApp());
+  DependencyInjection.onInit();
 }
 
 class MyApp extends StatelessWidget {

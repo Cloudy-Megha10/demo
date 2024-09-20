@@ -12,4 +12,20 @@ static TextStyle txtAllerBold28 = TextStyle(
     fontFamily: 'Aller',
     fontWeight: FontWeight.w700,
   );
+  static TextStyle txtAllerBold20 = TextStyle(
+    color: ColorConstant.black900,
+    fontSize: getFontSize(
+      20,
+    ),
+    fontFamily: 'Aller',
+    fontWeight: FontWeight.normal,
+  );
+  static TextStyle txtAllerBoldRed = TextStyle(
+    color: ColorConstant.darkRed,
+    fontSize: getFontSize(
+      18,
+    ),
+    fontFamily: 'Aller',
+    fontWeight: FontWeight.bold,
+  );
 }

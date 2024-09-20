@@ -14,7 +14,7 @@ class HomeWidget2 extends StatelessWidget {
         children: <Widget>[
           CustomBuildDashboardView(icon:Icons.people, title:'Manage Members'),
           CustomBuildDashboardView(icon:Icons.photo, title:'Manage Gallery'),
-          CustomBuildDashboardView(icon:Icons.report, title:'Manage Report'),
+          CustomBuildDashboardView(icon:Icons.assignment, title:'Manage Report'),
         ],
       ),
     );
