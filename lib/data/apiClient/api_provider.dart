@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:demo_app/core/utils/logger.dart';
 import 'package:demo_app/core/utils/progress_dialog_utils.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 class ApiProvider {

@@ -18,9 +18,13 @@ class LoginController extends GetxController {
   @override
   void onReady() async{
     super.onReady();
+    try{
     userId.value = (await _secureStorage.getUserId())!;
     print("homeScreen");
     (userId.value != "null" ? Get.offAllNamed(AppRoutes.homeScreen) : Get.offAllNamed(AppRoutes.loginScreen));
+  }catch(error){
+    print(error);
+  }
   }
 
    RxBool isPasswordVisible = false.obs; // Reactive boolean
@@ -47,11 +51,12 @@ class LoginController extends GetxController {
           backgroundColor: Colors.grey,
         );
         print("success");
-        _secureStorage.setUserId(loginUserResult.data!.data.userId.toString());
-        _secureStorage.setUserName(loginUserResult.data!.data.username.toString());
-        _secureStorage.setUserRole(loginUserResult.data!.data.role.toString());
+        _secureStorage.setUserId(loginUserResult.data!.data!.userId.toString());
+        _secureStorage.setUserName(loginUserResult.data!.data!.username.toString());
+        _secureStorage.setUserRole(loginUserResult.data!.data!.role.toString());
         Get.offAllNamed(AppRoutes.homeScreen);
       } else {
+        print("failure");
         print(loginUserResult.data);
         print(loginUserResult.message);
         Fluttertoast.showToast(
